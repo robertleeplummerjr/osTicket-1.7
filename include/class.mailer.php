@@ -84,7 +84,7 @@ class Mailer {
         $this->attachments = array_merge($this->attachments, $attachments);
     }
 
-    function send($to, $subject, $message, $options=null) {
+    function send($to, $subject, $message, $options=null, $cc = null) {
         global $ost;
 
         //Get the goodies
@@ -93,6 +93,7 @@ class Mailer {
 
         //do some cleanup
         $to = preg_replace("/(\r\n|\r|\n)/s",'', trim($to));
+	    $cc = preg_replace("/(\r\n|\r|\n)/s",'', trim($cc));
         $subject = preg_replace("/(\r\n|\r|\n)/s",'', trim($subject));
         //We're decoding html entities here becasuse we only support plain text for now - html support comming.
         $body = Format::htmldecode(preg_replace("/(\r\n|\r)/s", "\n", trim($message)));
@@ -109,6 +110,10 @@ class Mailer {
                 'Message-ID' => $messageId,
                 'X-Mailer' =>'osTicket Mailer'
                );
+
+	    if ($cc != null) {
+		    $headers['cc'] = $cc;
+	    }
 
         //Set bulk/auto-response headers.
         if($options && ($options['autoreply'] or $options['bulk'])) {

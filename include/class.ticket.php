@@ -1439,6 +1439,13 @@ class Ticket {
         if(!$vars['staffId'] && $thisstaff)
             $vars['staffId'] = $thisstaff->getId();
 
+	    $cc = null;
+	    if(isset($vars['cc'])){
+		    $cc = $vars['cc'];
+		    $ccmsg = "[ Message was CCed to: $cc. ]\n\r\n\r";
+		    $vars['response'] = "$ccmsg".$vars['response'];
+	    }
+
         if(!($response = $this->getThread()->addResponse($vars, $errors)))
             return null;
 
@@ -1482,7 +1489,7 @@ class Ticket {
                 'references' => $response->getEmailReferences());
             //TODO: setup  5 param (options... e.g mid trackable on replies)
             $email->send($this->getEmail(), $msg['subj'], $msg['body'], $attachments,
-                $options);
+                $options, $cc);
         }
 
         return $response;

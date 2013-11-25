@@ -413,6 +413,10 @@ if(!$cfg->showNotesInline()) { ?>
                         <?php echo ((!$info['emailreply'] && !$errors) || isset($info['emailreply']))?'checked="checked"':''; ?>> Email Reply</label>
                 </td>
             </tr>
+	        <tr>
+		        <td width="160">CC:</td>
+		        <td width="765"><input type="text" name="cc" ></td>
+	        </tr>
             <?php
             if($errors['response']) {?>
             <tr><td width="160">&nbsp;</td><td class="error"><?php echo $errors['response']; ?>&nbsp;</td></tr>
